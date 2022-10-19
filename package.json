@@ -1,0 +1,23 @@
+{
+  "name": "cage-example",
+  "version": "1.0.0",
+  "description": "How to build and deploy your first Cage",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/evervault/cage-example.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/evervault/cage-example/issues"
+  },
+  "homepage": "https://github.com/evervault/cage-example#readme",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "express": "^4.18.1"
+  }
+}
