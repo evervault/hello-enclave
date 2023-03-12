@@ -5,20 +5,6 @@ const app = express();
 const port = 8008;
 app.use(express.json());
 
-
-// SIMPLE HELLO WORLD ENDPOINT. ADD A BODY AND IT WILL BE RETURNED IN THE RESPONSE.
-app.all("/hello", async (req, res) => {
-  try {
-    res.send({
-      response: "Hello! I'm writing to you from within an enclave",
-      ...req.body,
-    });
-  } catch (err) {
-    console.log("Could not handle hello request", err);
-    res.status(500).send({msg: "Error from within the cage!"})
-  }
-});
-
 // EGRESS ENDPOINT. FOR USE WHEN YOUR CAGE HAS EGRESS ENABLED
 app.get("/egress", async (req, res) => {
   try {
@@ -70,6 +56,19 @@ app.all("/decrypt", async (req, res) => {
     res.send({ ...result.data });
   } catch (err) {
     console.log("Could not decrypt body", err);
+    res.status(500).send({msg: "Error from within the cage!"})
+  }
+});
+
+// SIMPLE HELLO WORLD ENDPOINT. ADD A BODY AND IT WILL BE RETURNED IN THE RESPONSE.
+app.all("*", async (req, res) => {
+  try {
+    res.send({
+      response: "Hello! I'm writing to you from within an enclave",
+      ...req.body,
+    });
+  } catch (err) {
+    console.log("Could not handle hello request", err);
     res.status(500).send({msg: "Error from within the cage!"})
   }
 });
