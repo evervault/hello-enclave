@@ -32,11 +32,7 @@ app.all("/compute", async (req, res) => {
 // ENCRYPT ENDPOINT. CALLS OUT TO THE ENCRYPT API IN THE CAGE TO ENCRYPT THE REQUEST BODY
 app.all("/encrypt", async (req, res) => {
   try {
-    const result = await axios.post("http://127.0.0.1:9999/encrypt", req.body, {
-      headers: {
-        "api-key": process.env.EV_API_KEY,
-      },
-    });
+    const result = await axios.post("http://127.0.0.1:9999/encrypt", req.body);
     res.send({ ...result.data });
   } catch (err) {
     console.log("Could not encrypt body", err);
@@ -45,13 +41,10 @@ app.all("/encrypt", async (req, res) => {
 });
 
 // DECRYPT ENDPOINT. CALLS OUT TO THE DECRYPT API IN THE CAGE TO DECRYPT THE REQUEST BODY
+// THIS IS FOR DEMO PURPOSES - THE CAGE WILL AUTOMATICALLY DECRYPT FEILDS AS THEY GO INTO THE CAGE
 app.all("/decrypt", async (req, res) => {
   try {
-    const result = await axios.post("http://127.0.0.1:9999/decrypt", req.body, {
-      headers: {
-        "api-key": process.env.EV_API_KEY,
-      },
-    });
+    const result = await axios.post("http://127.0.0.1:9999/decrypt", req.body);
 
     res.send({ ...result.data });
   } catch (err) {
