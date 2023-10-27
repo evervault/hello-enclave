@@ -53,6 +53,11 @@ app.all("/decrypt", async (req, res) => {
   }
 });
 
+app.get('/health', (req, res) => {
+  // perform some healthcheck...
+  return res.send('OK');
+});
+
 // SIMPLE HELLO WORLD ENDPOINT. ADD A BODY AND IT WILL BE RETURNED IN THE RESPONSE.
 app.all("*", async (req, res) => {
   try {
