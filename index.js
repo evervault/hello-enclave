@@ -5,7 +5,7 @@ const app = express();
 const port = 8008;
 app.use(express.json());
 
-// EGRESS ENDPOINT. FOR USE WHEN YOUR CAGE HAS EGRESS ENABLED
+// EGRESS ENDPOINT. FOR USE WHEN YOUR ENCLAVE HAS EGRESS ENABLED
 app.get("/egress", async (req, res) => {
   try {
     const result = await axios.get(
@@ -14,7 +14,7 @@ app.get("/egress", async (req, res) => {
     res.send({ ...result.data });
   } catch (err) {
     console.log("Could not send request out of enclave", err);
-    res.status(500).send({msg: "Error from within the cage!"})
+    res.status(500).send({msg: "Error from within the enclave!"})
   }
 });
 
@@ -25,23 +25,23 @@ app.all("/compute", async (req, res) => {
     res.send({ sum: result });
   } catch (err) {
     console.log("Could not compute sum of a and b", err);
-    res.status(500).send({msg: "Error from within the cage!"})
+    res.status(500).send({msg: "Error from within the enclave!"})
   }
 });
 
-// ENCRYPT ENDPOINT. CALLS OUT TO THE ENCRYPT API IN THE CAGE TO ENCRYPT THE REQUEST BODY
+// ENCRYPT ENDPOINT. CALLS OUT TO THE ENCRYPT API IN THE ENCLAVE TO ENCRYPT THE REQUEST BODY
 app.all("/encrypt", async (req, res) => {
   try {
     const result = await axios.post("http://127.0.0.1:9999/encrypt", req.body);
     res.send({ ...result.data });
   } catch (err) {
     console.log("Could not encrypt body", err);
-    res.status(500).send({msg: "Error from within the cage!"})
+    res.status(500).send({msg: "Error from within the enclave!"})
   }
 });
 
-// DECRYPT ENDPOINT. CALLS OUT TO THE DECRYPT API IN THE CAGE TO DECRYPT THE REQUEST BODY
-// THIS IS FOR DEMO PURPOSES - THE CAGE WILL AUTOMATICALLY DECRYPT FEILDS AS THEY GO INTO THE CAGE
+// DECRYPT ENDPOINT. CALLS OUT TO THE DECRYPT API IN THE ENCLAVE TO DECRYPT THE REQUEST BODY
+// THIS IS FOR DEMO PURPOSES - THE ENCLAVE WILL AUTOMATICALLY DECRYPT FEILDS AS THEY GO INTO THE ENCLAVE
 app.all("/decrypt", async (req, res) => {
   try {
     const result = await axios.post("http://127.0.0.1:9999/decrypt", req.body);
@@ -49,7 +49,7 @@ app.all("/decrypt", async (req, res) => {
     res.send({ ...result.data });
   } catch (err) {
     console.log("Could not decrypt body", err);
-    res.status(500).send({msg: "Error from within the cage!"})
+    res.status(500).send({msg: "Error from within the enclave!"})
   }
 });
 
@@ -67,7 +67,7 @@ app.all("*", async (req, res) => {
     });
   } catch (err) {
     console.log("Could not handle hello request", err);
-    res.status(500).send({msg: "Error from within the cage!"})
+    res.status(500).send({msg: "Error from within the enclave!"})
   }
 });
 
