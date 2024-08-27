@@ -2,7 +2,7 @@
 
 A simple node server that can be deployed into a Enclave. 
 
-Use the [Evervault CLI](https://docs.evervault.com/docs/cli) to get started with Enclaves.
+Use the [Evervault CLI](https://docs.evervault.com/sdks/cli) to get started with Enclaves.
 
 ## Endpoints
 
