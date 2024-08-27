@@ -5,43 +5,43 @@ const app = express();
 const port = 8008;
 app.use(express.json());
 
-// EGRESS ENDPOINT. FOR USE WHEN YOUR ENCLAVE HAS EGRESS ENABLED
+// Egress endpoint. For use when your enclave has egress enabled
 app.get("/egress", async (req, res) => {
   try {
     const result = await axios.get(
-      "https://jsonplaceholder.typicode.com/posts/1"
+      "https://jsonplaceholder.typicode.com/posts/1",
     );
     res.send({ ...result.data });
   } catch (err) {
     console.log("Could not send request out of enclave", err);
-    res.status(500).send({msg: "Error from within the enclave!"})
+    res.status(500).send({ msg: "Error from within the enclave!" });
   }
 });
 
-// COMPUTE ENDPOINT. ENDPOINT TO ADD TWO NUMBERS TOGETHER
+// Compute endpoint. Adds two numbers together and returns the sum
 app.all("/compute", async (req, res) => {
   try {
     result = parseInt(req.body.a) + parseInt(req.body.b);
     res.send({ sum: result });
   } catch (err) {
     console.log("Could not compute sum of a and b", err);
-    res.status(500).send({msg: "Error from within the enclave!"})
+    res.status(500).send({ msg: "Error from within the enclave!" });
   }
 });
 
-// ENCRYPT ENDPOINT. CALLS OUT TO THE ENCRYPT API IN THE ENCLAVE TO ENCRYPT THE REQUEST BODY
+// Encrypt endpoint. Calls out to the encrypt API in the enclave to encrypt the request body
 app.all("/encrypt", async (req, res) => {
   try {
     const result = await axios.post("http://127.0.0.1:9999/encrypt", req.body);
     res.send({ ...result.data });
   } catch (err) {
     console.log("Could not encrypt body", err);
-    res.status(500).send({msg: "Error from within the enclave!"})
+    res.status(500).send({ msg: "Error from within the enclave!" });
   }
 });
 
-// DECRYPT ENDPOINT. CALLS OUT TO THE DECRYPT API IN THE ENCLAVE TO DECRYPT THE REQUEST BODY
-// THIS IS FOR DEMO PURPOSES - THE ENCLAVE WILL AUTOMATICALLY DECRYPT FEILDS AS THEY GO INTO THE ENCLAVE
+// Decrypt endpoint. Calls out to the decrypt API in the enclave to decrypt the request body
+// This is for demo purposes - the enclave will automatically decrypt fields as they go into the enclave
 app.all("/decrypt", async (req, res) => {
   try {
     const result = await axios.post("http://127.0.0.1:9999/decrypt", req.body);
@@ -49,16 +49,27 @@ app.all("/decrypt", async (req, res) => {
     res.send({ ...result.data });
   } catch (err) {
     console.log("Could not decrypt body", err);
-    res.status(500).send({msg: "Error from within the enclave!"})
+    res.status(500).send({ msg: "Error from within the enclave!" });
   }
 });
 
-app.get('/health', (req, res) => {
-  // perform some healthcheck...
-  return res.send('OK');
+let is_unhealthy = false;
+
+app.get("/sad", (req, res) => {
+  is_unhealthy = !is_unhealthy;
+  return res.send(is_unhealthy ? "Sad" : "Happy");
 });
 
-// SIMPLE HELLO WORLD ENDPOINT. ADD A BODY AND IT WILL BE RETURNED IN THE RESPONSE.
+app.get("/health", (req, res) => {
+  // perform some healthcheck...
+  //
+  if (is_unhealthy) {
+    return res.status(500).json({ status: "unhealthy" });
+  }
+  return res.send("OK");
+});
+
+// Simple hello world endpoint. Add a body and it will be returned in the response.
 app.all("*", async (req, res) => {
   try {
     res.send({
@@ -67,7 +78,7 @@ app.all("*", async (req, res) => {
     });
   } catch (err) {
     console.log("Could not handle hello request", err);
-    res.status(500).send({msg: "Error from within the enclave!"})
+    res.status(500).send({ msg: "Error from within the enclave!" });
   }
 });
 
