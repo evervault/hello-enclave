@@ -53,19 +53,8 @@ app.all("/decrypt", async (req, res) => {
   }
 });
 
-let is_unhealthy = false;
-
-app.get("/sad", (req, res) => {
-  is_unhealthy = !is_unhealthy;
-  return res.send(is_unhealthy ? "Sad" : "Happy");
-});
-
 app.get("/health", (req, res) => {
   // perform some healthcheck...
-  //
-  if (is_unhealthy) {
-    return res.status(500).json({ status: "unhealthy" });
-  }
   return res.send("OK");
 });
 
