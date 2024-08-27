@@ -1,6 +1,8 @@
-# HELLO ENCLAVE
+# Hello World Enclave
 
 A simple node server that can be deployed into a Enclave. 
+
+Use the [Evervault CLI](https://docs.evervault.com/sdks/cli) to get started with Enclaves.
 
 ## Endpoints
 
