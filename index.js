@@ -59,7 +59,7 @@ app.get("/health", (req, res) => {
 });
 
 // Simple hello world endpoint. Add a body and it will be returned in the response.
-app.all("*", async (req, res) => {
+app.all("*name", async (req, res) => {
   try {
     res.send({
       response: "Hello! I'm writing to you from within an enclave",
