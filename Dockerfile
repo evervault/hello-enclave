@@ -1,4 +1,4 @@
-FROM node:lts-alpine3.20
+FROM node:lts-alpine
 
 COPY ./index.js /index.js
 COPY ./package.json /package.json
